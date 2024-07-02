@@ -9,11 +9,11 @@ import numpy as np
 import os
 import json
 from tqdm import tqdm
-import random
 import argparse
 import logging
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from torch.cuda.amp import GradScaler, autocast
+import secrets
 
 class ImageCaptioningDataset(Dataset):
     def __init__(self, image_dir, captions_file, transform=None, max_length=50):
@@ -38,7 +38,7 @@ class ImageCaptioningDataset(Dataset):
         if self.transform:
             image = self.transform(image)
         
-        caption = random.choice(self.captions[image_file])
+        caption = secrets.choice(self.captions[image_file])
         tokens = self.tokenizer.encode_plus(
             caption, 
             max_length=self.max_length, 
